@@ -1,0 +1,37 @@
+OrdererOrgs: #define servicio ordenamiento
+  - Name: Orderer
+    Domain: etsi.com #se puede cambiar dominio
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+        SANS:
+          - localhost
+
+PeerOrgs: #peers, organizaciones que definimos
+  - Name: Buyer
+    Domain: buyer.etsi.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1 #cuantos nodos quiero crear
+      SANS:
+        - localhost
+    Users:
+      Count: 1 #numero usuarios a crear, luego se pueden crear mas
+  - Name: Seller
+    Domain: seller.etsi.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+    Users:
+      Count: 1
+  - Name: Client
+    Domain: client.etsi.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      SANS:
+        - localhost
+    Users:
+      Count: 1

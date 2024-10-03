@@ -1,0 +1,5 @@
+[36m2024-08-25 11:43:45.444 UTC [bccsp] GetDefault -> DEBU 001[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:43:45.444 UTC [bccsp] GetDefault -> DEBU 002[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:43:45.445 UTC [bccsp] GetDefault -> DEBU 003[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:43:45.446 UTC [main] InitCmd -> DEBU 004[0m peer lifecycle chaincode package does not need to init crypto
+Error: error getting chaincode bytes: 'go list' failed with: go: go.mod file not found in current directory or any parent directory; see 'go help modules': exit status 1

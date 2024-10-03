@@ -1,0 +1,122 @@
+{
+  "name": "fabric-network",
+  "version": "1.0.0",
+  "client": {
+    "organization": "BuyerOrg",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        },
+        "orderer": "300"
+      }
+    }
+  },
+  "channels": {
+    "marketplace": {
+      "orderers": [
+        "orderer.etsi.com"
+      ],
+      "peers": {
+        "peer0.buyer.etsi.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer0.seller.etsi.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        },
+        "peer0.client.etsi.com": {
+          "endorsingPeer": true,
+          "chaincodeQuery": true,
+          "ledgerQuery": true,
+          "eventSource": true
+        }
+      }
+    }
+  },
+  "organizations": {
+    "BuyerOrg": {
+      "mspid": "BuyerMSP",
+      "peers": [
+        "peer0.buyer.etsi.com"
+      ],
+      "certificateAuthorities": [
+        "ca.buyer.etsi.com"
+      ]
+    },
+    "SellerOrg": {
+      "mspid": "SellerMSP",
+      "peers": [
+        "peer0.seller.etsi.com"
+      ],
+      "certificateAuthorities": [
+        "ca.seller.etsi.com"
+      ]
+    },
+    "ClientOrg": {
+      "mspid": "ClientMSP",
+      "peers": [
+        "peer0.client.etsi.com"
+      ],
+      "certificateAuthorities": [
+        "ca.client.etsi.com"
+      ]
+    }
+  },
+  "orderers": {
+    "orderer.etsi.com": {
+      "url": "grpcs://172.18.0.6:7050",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/ordererOrganizations/etsi.com/tlsca/tlsca.etsi.com-cert.pem"
+      }
+    }
+  },
+  "peers": {
+    "peer0.buyer.etsi.com": {
+      "url": "grpcs://172.18.0.8:7051",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/buyer.etsi.com/tlsca/tlsca.buyer.etsi.com-cert.pem"
+      }
+    },
+    "peer0.seller.etsi.com": {
+      "url": "grpcs://172.18.0.7:8051",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/seller.etsi.com/tlsca/tlsca.seller.etsi.com-cert.pem"
+      }
+    },
+    "peer0.client.etsi.com": {
+      "url": "grpcs://172.18.0.9:9051",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/tlsca/tlsca.client.etsi.com-cert.pem"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.buyer.etsi.com": {
+      "url": "https://localhost:7054",
+      "caName": "ca-buyer",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/buyer.etsi.com/ca/ca.buyer.etsi.com-cert.pem"
+      }
+    },
+    "ca.seller.etsi.com": {
+      "url": "https://localhost:8054",
+      "caName": "ca-seller",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/seller.etsi.com/ca/ca.seller.etsi.com-cert.pem"
+      }
+    },
+    "ca.client.etsi.com": {
+      "url": "https://localhost:9054",
+      "caName": "ca-client",
+      "tlsCACerts": {
+        "path": "/home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/ca/ca.client.etsi.com-cert.pem"
+      }
+    }
+  }
+}

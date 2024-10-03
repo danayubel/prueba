@@ -1,0 +1,237 @@
+    ################################################################################
+    #   Section: Organizations
+    ################################################################################
+    Organizations:
+    
+        - &OrdererOrg
+            Name: OrdererOrg
+            ID: OrdererMSP
+            MSPDir: crypto-config/ordererOrganizations/etsi.com/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.member')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.member')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.admin')"
+            OrdererEndpoints:
+                - orderer.etsi.com:7050
+    
+        - &Buyer
+            Name: BuyerMSP
+            ID: BuyerMSP
+            MSPDir: crypto-config/peerOrganizations/buyer.etsi.com/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('BuyerMSP.admin', 'BuyerMSP.peer', 'BuyerMSP.client')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('BuyerMSP.admin', 'BuyerMSP.client')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('BuyerMSP.admin')"
+                Endorsement:
+                    Type: Signature
+                    Rule: "OR('BuyerMSP.peer')"
+            AnchorPeers:
+                - Host: peer0.buyer.etsi.com
+                  Port: 7051
+    
+        - &Seller
+            Name: SellerMSP
+            ID: SellerMSP
+            MSPDir: crypto-config/peerOrganizations/seller.etsi.com/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('SellerMSP.admin', 'SellerMSP.peer', 'SellerMSP.client')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('SellerMSP.admin', 'SellerMSP.client')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('SellerMSP.admin')"
+                Endorsement:
+                    Type: Signature
+                    Rule: "OR('SellerMSP.peer')"
+            AnchorPeers:
+                - Host: peer0.seller.etsi.com
+                  Port: 7051
+    
+        - &Client
+            Name: ClientMSP
+            ID: ClientMSP
+            MSPDir: crypto-config/peerOrganizations/client.etsi.com/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('ClientMSP.admin', 'ClientMSP.peer', 'ClientMSP.client')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('ClientMSP.admin', 'ClientMSP.client')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('ClientMSP.admin')"
+                Endorsement:
+                    Type: Signature
+                    Rule: "OR('ClientMSP.peer')"
+            AnchorPeers:
+                - Host: peer0.client.etsi.com
+                  Port: 7051
+    ################################################################################
+    #   SECTION: Capabilities
+    ################################################################################
+    Capabilities:
+        Channel: &ChannelCapabilities
+            V2_0: true
+    
+        Orderer: &OrdererCapabilities
+            V2_0: true
+    
+        Application: &ApplicationCapabilities
+            V2_0: true        
+    
+    ################################################################################
+    #   SECTION: Application
+    ################################################################################
+    Application: &ApplicationDefaults
+    
+        # Organizations is the list of orgs which are defined as participants on
+        # the application side of the network
+        Organizations:
+    
+        # Policies defines the set of policies at this level of the config tree
+        # For Application policies, their canonical path is
+        #   /Channel/Application/<PolicyName>
+        Policies:
+            Readers:
+                Type: ImplicitMeta
+                Rule: "ANY Readers"
+            Writers:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+            Admins:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Admins"
+            LifecycleEndorsement:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Endorsement"
+            Endorsement:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Endorsement"
+    
+        Capabilities:
+            <<: *ApplicationCapabilities    
+    
+    ################################################################################
+    #   SECTION: Orderer
+    ################################################################################
+    Orderer: &OrdererDefaults
+        # Orderer Type: The orderer implementation to start
+        OrdererType: solo
+    
+    #    OrdererType: etcdraft
+    
+        EtcdRaft:
+            Consenters:
+            - Host: orderer.etsi.com
+              Port: 7050
+              ClientTLSCert: ../organizations/ordererOrganizations/etsi.com/orderers/orderer.etsi.com/tls/server.crt
+              ServerTLSCert: ../organizations/ordererOrganizations/etsi.com/orderers/orderer.etsi.com/tls/server.crt
+    
+        Addresses:
+            - orderer.etsi.com:7050
+        BatchTimeout: 2s
+        BatchSize:
+            MaxMessageCount: 10
+            AbsoluteMaxBytes: 99 MB
+            PreferredMaxBytes: 512 KB
+    
+        Kafka:
+            Brokers:
+                - 127.0.0.1:9092
+        Organizations:
+    
+        Policies:
+            Readers:
+                Type: ImplicitMeta
+                Rule: "ANY Readers"
+            Writers:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+            Admins:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Admins"
+            # BlockValidation specifies what signatures must be included in the block
+            # from the orderer for the peer to validate it.
+            BlockValidation:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+    
+    ################################################################################
+    #
+    #   CHANNEL
+    #
+    #   This section defines the values to encode into a config transaction or
+    #   genesis block for channel related parameters.
+    #
+    ################################################################################
+    Channel: &ChannelDefaults
+        # Policies defines the set of policies at this level of the config tree
+        # For Channel policies, their canonical path is
+        #   /Channel/<PolicyName>
+        Policies:
+            # Who may invoke the 'Deliver' API
+            Readers:
+                Type: ImplicitMeta
+                Rule: "ANY Readers"
+            # Who may invoke the 'Broadcast' API
+            Writers:
+                Type: ImplicitMeta
+                Rule: "ANY Writers"
+            # By default, who may modify elements at this config level
+            Admins:
+                Type: ImplicitMeta
+                Rule: "MAJORITY Admins"
+    
+        # Capabilities describes the channel level capabilities, see the
+        # dedicated Capabilities section elsewhere in this file for a full
+        # description
+        Capabilities:
+            <<: *ChannelCapabilities
+    
+    ################################################################################
+    #   Profile
+    ################################################################################
+    Profiles:
+    
+        ThreeOrgsOrdererGenesis:
+            <<: *ChannelDefaults
+            Orderer:
+                <<: *OrdererDefaults
+                Organizations:
+                    - *OrdererOrg
+                Capabilities:
+                    <<: *OrdererCapabilities
+            Consortiums:
+                SampleConsortium:
+                    Organizations:
+                        - *Buyer
+                        - *Seller
+                        - *Client
+        ThreeOrgsChannel:
+            Consortium: SampleConsortium
+            <<: *ChannelDefaults
+            Application:
+                <<: *ApplicationDefaults
+                Organizations:
+                    - *Buyer
+                    - *Seller
+                    - *Client
+                Capabilities:
+                    <<: *ApplicationCapabilities
+    

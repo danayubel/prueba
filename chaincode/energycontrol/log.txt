@@ -1,0 +1,5 @@
+[36m2024-08-25 11:44:33.880 UTC [bccsp] GetDefault -> DEBU 001[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:44:33.881 UTC [bccsp] GetDefault -> DEBU 002[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:44:33.882 UTC [bccsp] GetDefault -> DEBU 003[0m Before using BCCSP, please call InitFactories(). Falling back to bootBCCSP.
+[36m2024-08-25 11:44:33.883 UTC [main] InitCmd -> DEBU 004[0m peer lifecycle chaincode package does not need to init crypto
+Error: error getting chaincode bytes: 'go list' failed with: go: go.mod requires go >= 1.22 (running go 1.21.6; GOTOOLCHAIN=local): exit status 1

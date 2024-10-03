@@ -1,0 +1,137 @@
+
+################################################################################
+#
+#   Core YAML for Hyperledger Fabric configuration
+#
+################################################################################
+
+# Server settings
+server:
+  address: 0.0.0.0
+  grpc.keepalive:
+    minInterval: 60s
+    interval: 2h
+    timeout: 20s
+
+################################################################################
+#   Ledger State Database - Choose either CouchDB or goleveldb
+################################################################################
+ledger:
+  state:
+    stateDatabase: CouchDB
+    couchDBConfig:
+      couchDBAddress: couchdb0:5984
+      username: ""
+      password: ""
+      maxRetries: 3
+      maxRetriesOnStartup: 12
+      requestTimeout: 35s
+      queryLimit: 10000
+      warmIndexesAfterNBlocks: 1
+      autoWarmIndexes: true
+      maxBatchUpdateSize: 1000
+      internalQueryLimit: 1000
+
+################################################################################
+#   Logging Level Configuration
+################################################################################
+logging:
+  level: info
+  peer: info
+  cauthdsl: warning
+  gossip: warning
+  grpc: error
+  ledger: info
+  msp: warning
+  policies: warning
+  common: info
+  validation: warning
+
+################################################################################
+#   Peer Configuration
+################################################################################
+peer:
+  id: peer0.client.etsi.com
+  networkId: dev
+  listenAddress: 0.0.0.0:7051
+  chaincodeListenAddress: 0.0.0.0:7052
+  chaincodeAddress: 127.0.0.1:7052
+  tls:
+    enabled: true
+    cert:
+      file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/server.crt
+    key:
+      file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/server.key
+    rootcert:
+      file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/ca.crt
+  gossip:
+    bootstrap: peer0.client.etsi.com:7051
+    useLeaderElection: true
+    orgLeader: false
+    membershipTrackerInterval: 5s
+    maxBlockCountToStore: 100
+    maxPropagationBurstLatency: 10ms
+    maxPropagationBurstSize: 10
+    propagateIterations: 3
+    pullInterval: 4s
+    pullPeerNum: 3
+    requestStateInfoInterval: 4s
+    publishCertPeriod: 10s
+    digestWaitTime: 1s
+    requestWaitTime: 1s
+    responseWaitTime: 2s
+    publishCertPeriod: 10s
+  discovery:
+    enabled: true
+    authCacheEnabled: true
+    authCacheMaxSize: 1000
+    authCachePurgeRetentionRatio: 0.75
+  limits:
+    concurrency:
+      endorserService: 2500
+      deliverService: 2500
+
+################################################################################
+# Chaincode Environment
+################################################################################
+chaincode:
+  pull: true
+  golang:
+    runtime: /opt/gopath
+  install:
+    timeout: 300s
+  startuptimeout: 300s
+  executetimeout: 30s
+
+################################################################################
+# TLS Configuration
+################################################################################
+tls:
+  enabled: true
+  clientAuthRequired: true
+  cert:
+    file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/server.crt
+  key:
+    file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/server.key
+  rootcert:
+    file: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/tls/ca.crt
+
+################################################################################
+# MSP (Membership Service Provider) Configuration
+################################################################################
+msp:
+  localMspId: ClientMSP
+  path: /home/daniel/TFG/etsi-network/crypto-config/peerOrganizations/client.etsi.com/peers/peer0.client.etsi.com/msp
+
+################################################################################
+# Orderer Connection
+################################################################################
+orderer:
+  tls:
+    enabled: true
+    cert:
+      file: /home/daniel/TFG/etsi-network/crypto-config/ordererOrganizations/etsi.com/orderers/orderer.etsi.com/tls/server.crt
+    key:
+      file: /home/daniel/TFG/etsi-network/crypto-config/ordererOrganizations/etsi.com/orderers/orderer.etsi.com/tls/server.key
+    rootcert:
+      file: /home/daniel/TFG/etsi-network/crypto-config/ordererOrganizations/etsi.com/orderers/orderer.etsi.com/tls/ca.crt
